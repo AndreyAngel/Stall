@@ -1,16 +1,61 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
+using CatalogAPI.Models;
 
 namespace CatalogAPI.Controllers
 {
+    [Route("cat/brand")]
     public class BrandController : Controller
     {
-        public IActionResult Index()
+        Context db;
+        public BrandController(Context context)
         {
-            return View();
+            db = context;
+        }
+
+
+        [HttpGet]
+        public async Task<JsonResult> Get()
+        {
+            return Json(await db.Brands.ToListAsync());
+        }
+
+        [HttpGet]
+        [Route("{id:int}")]
+        public async Task<JsonResult> Get(int id)
+        {
+            return Json(await db.Brands.FirstOrDefaultAsync(p => p.Id == id));
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> Create(Brand brand)
+        {
+            await db.Brands.AddAsync(brand);
+            await db.SaveChangesAsync();
+            return Json(brand);
+        }
+
+        [HttpDelete]
+        [Route("{id:int}")]
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id != null)
+            {
+                Brand brand = new Brand { Id = id.Value };
+                db.Entry(brand).State = EntityState.Deleted;
+                await db.SaveChangesAsync();
+            }
+            return NotFound();
+        }
+
+        [HttpPut]
+        [Route("{id:int}")]
+        public async Task<JsonResult> Update(Brand brand)
+        {
+            db.Brands.Update(brand);
+            await db.SaveChangesAsync();
+            return Json(brand);
         }
     }
 }

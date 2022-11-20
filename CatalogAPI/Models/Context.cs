@@ -4,8 +4,6 @@ namespace CatalogAPI.Models
 {
     public class Context : DbContext
     {
-        public Context()
-        { }
         public Context(DbContextOptions<Context> options): base(options)
         {
             Database.EnsureCreated();   // создаем базу данных при первом обращении
@@ -13,6 +11,9 @@ namespace CatalogAPI.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         { }
+
         public DbSet<Product> Products { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Brand> Brands { get; set; }
     }
 }

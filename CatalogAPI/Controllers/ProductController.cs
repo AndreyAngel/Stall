@@ -19,14 +19,18 @@ namespace CatalogAPI.Controllers
         [HttpGet]
         public async Task<JsonResult> Get()
         {
-            return Json(await db.Products.ToListAsync());
+            return Json(await db.Products.Include(p => p.Category).
+                                          Include(p => p.Brand).
+                                          ToListAsync());
         }
 
         [HttpGet]
         [Route("{id:int}")]
         public async Task<JsonResult> Get(int id)
         {
-            return Json(await db.Products.FirstOrDefaultAsync(p => p.Id == id));
+            return Json(await db.Products.Include(p => p.Category).
+                                          Include(p => p.Brand).
+                                          FirstOrDefaultAsync(p => p.Id == id));
         }
 
         [HttpPost]
@@ -52,7 +56,7 @@ namespace CatalogAPI.Controllers
 
         [HttpPut]
         [Route("{id:int}")]
-        public async Task<JsonResult> Edit(Product product)
+        public async Task<JsonResult> Update(Product product)
         {
             db.Products.Update(product);
             await db.SaveChangesAsync();
