@@ -18,14 +18,16 @@ namespace CatalogAPI.Controllers
         [HttpGet]
         public async Task<JsonResult> Get()
         {
-            return Json(await db.Brands.ToListAsync());
+            return Json(await db.Brands.Include(p => p.Products).ToListAsync());
         }
 
         [HttpGet]
         [Route("{id:int}")]
         public async Task<JsonResult> Get(int id)
         {
-            return Json(await db.Brands.FirstOrDefaultAsync(p => p.Id == id));
+            Brand brand = await db.Brands.FirstOrDefaultAsync(p => p.Id == id);
+            await db.Entry(brand).Collection(p => p.Products).LoadAsync();
+            return Json(brand);
         }
 
         [HttpPost]
