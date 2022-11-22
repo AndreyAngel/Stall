@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace OrderAPI.Controllers
 {
+    [Route("ord/basketProduct")]
     public class BasketProductController : Controller
     {
         Context db;
@@ -16,17 +17,10 @@ namespace OrderAPI.Controllers
             db = context;
         }
 
-        [HttpGet]
-        [Route("{id:int}")]
-        public async Task<JsonResult> Get(int id)
-        {
-            return Json(db.BasketProductes.Where(p => p.Id == id));
-        }
-
         [HttpPost]
         public async Task<JsonResult> Create(BasketProduct basketProduct)
         {
-            Basket basket = await db.Baskets.FirstAsync(p => p.UserId == basketProduct.UserId);
+            Basket basket = await db.Baskets.FirstAsync(p => p.Id == basketProduct.UserId);
 
             bool flag = true;
             foreach (BasketProduct bp in basket.basketProductes)
@@ -47,7 +41,7 @@ namespace OrderAPI.Controllers
             basket.ComputeTotalValue();
             db.Baskets.Update(basket);
             await db.SaveChangesAsync();
-
+ 
             return Json(basketProduct);
         }
 
@@ -57,8 +51,12 @@ namespace OrderAPI.Controllers
         {
             if (id != null)
             {
-                Category category = new Category { Id = id.Value };
-                db.Entry(category).State = EntityState.Deleted;
+                BasketProduct basketProduct = new BasketProduct { Id = id.Value };
+                db.Entry(basketProduct).State = EntityState.Deleted;
+
+                Basket basket = await db.Baskets.FirstAsync(p => p.Id == basketProduct.UserId);
+                basket.ComputeTotalValue();
+
                 await db.SaveChangesAsync();
             }
             return NotFound();
@@ -66,11 +64,15 @@ namespace OrderAPI.Controllers
 
         [HttpPut]
         [Route("{id:int}")]
-        public async Task<JsonResult> Update(Category category)
+        public async Task<JsonResult> Update(BasketProduct basketProduct)
         {
-            db.Categories.Update(category);
+            db.BasketProductes.Update(basketProduct);
+
+            Basket basket = await db.Baskets.FirstAsync(p => p.Id == basketProduct.UserId);
+            basket.ComputeTotalValue();
+
             await db.SaveChangesAsync();
-            return Json(category);
+            return Json(basketProduct);
         }
     }
 }

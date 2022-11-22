@@ -16,15 +16,5 @@ namespace OrderAPI.Models
         [Required]
         [Display(Name = "Цена")]
         public double Price { get; set; }
-
-
-        [Display(Name = "Категория")]
-        public int? CategoryId { get; set; }
-        public Category Category { get; set; }
-
-
-        [Display(Name = "Бренд")]
-        public int? BrandId { get; set; }
-        public Brand Brand { get; set; }
     }
 }
