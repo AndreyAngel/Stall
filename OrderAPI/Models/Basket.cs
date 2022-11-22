@@ -8,7 +8,7 @@ namespace OrderAPI.Models
     public class Basket
     {
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int Id { get; set; } // соответствует Id пользователя
+        public int Id { get; set; } // Generated during user registration
 
         [Display(Name = "Список товаров")]
         public List<BasketProduct> basketProductes { get; set; }
@@ -23,7 +23,7 @@ namespace OrderAPI.Models
 
         public void ComputeTotalValue()
         {
-            TotalValue = basketProductes.Sum(p => p.Product.Price * p.Quantity);
+            TotalValue = basketProductes.Sum(p => p.TotalValue);
 
         }
 

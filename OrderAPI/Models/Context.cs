@@ -13,8 +13,6 @@ namespace OrderAPI.Models
         { }
 
         public DbSet<Product> Products { get; set; }
-        public DbSet<Category> Categories { get; set; }
-        public DbSet<Brand> Brands { get; set; }
         public DbSet<BasketProduct> BasketProductes { get; set; }
         public DbSet<Basket> Baskets { get; set; }
     }

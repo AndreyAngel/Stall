@@ -16,10 +16,13 @@ namespace OrderAPI.Controllers
         }
 
         // Receiving the basket (all productes)
-        [HttpPost]
-        public async Task<JsonResult> Get(int user_id)
+        [HttpGet]
+        [Route("{id:int}")]
+        public async Task<JsonResult> Get(int id)
         {
-            return Json(await db.Baskets.Include(p => p.basketProductes).FirstOrDefaultAsync(p => p.Id == user_id));
+            Basket basket = await db.Baskets.FirstOrDefaultAsync(p => p.Id == id);
+            await db.Entry(basket).Collection(p => p.basketProductes).LoadAsync();
+            return Json(basket);
         }
 
 
@@ -34,9 +37,10 @@ namespace OrderAPI.Controllers
 
         // Emptying the basket 
         [HttpPut]
-        public async Task<JsonResult> Clear(int user_id)
+        [Route("{id:int}")]
+        public async Task<JsonResult> Clear(int id)
         {
-            Basket basket = await db.Baskets.Include(p => p.basketProductes).FirstOrDefaultAsync(p => p.Id == user_id);
+            Basket basket = await db.Baskets.Include(p => p.basketProductes).FirstOrDefaultAsync(p => p.Id == id);
             basket.Clear();
 
             db.Baskets.Update(basket);
