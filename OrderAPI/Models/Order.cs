@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
 
 namespace OrderAPI.Models
 {
@@ -11,7 +13,21 @@ namespace OrderAPI.Models
         public int UserId { get; set; }
 
         [Required]
-        [Display(Name = "Id товара")]
-        public int ProductId { get; set; }
+        [Display(Name = "Товары")]
+        public List<BasketProduct> basketProductes { get; set; }
+
+        [Display(Name = "Статус")]
+        public bool Status { get; set; } = false;   // false - готовится, true - готов
+
+        [Display(Name = "Статус оплаты")]
+        public bool Payment_State { get; set; } = false;
+
+        [Display(Name = "Дата и время заказа")]
+        public static DateTime DateTime { get; set; } = DateTime.Now;
+
+        public Order()
+        {
+            basketProductes = new List<BasketProduct>();
+        }
     }
 }

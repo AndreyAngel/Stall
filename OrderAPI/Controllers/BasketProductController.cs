@@ -64,12 +64,12 @@ namespace OrderAPI.Controllers
                 basket.ComputeTotalValue();
 
                 await db.SaveChangesAsync();
+                return Json("OK");
             }
             return NotFound();
         }
 
         [HttpPut]
-        [Route("{id:int}")]
         public async Task<JsonResult> Update(BasketProduct basketProduct)
         {
             db.BasketProductes.Update(basketProduct);

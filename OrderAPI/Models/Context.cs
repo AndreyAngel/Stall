@@ -15,5 +15,6 @@ namespace OrderAPI.Models
         public DbSet<Product> Products { get; set; }
         public DbSet<BasketProduct> BasketProductes { get; set; }
         public DbSet<Basket> Baskets { get; set; }
+        public DbSet<Order> Orders { get; set; }
     }
 }
