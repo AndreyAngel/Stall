@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using OrderAPI.Models;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace OrderAPI.Controllers
@@ -33,9 +34,24 @@ namespace OrderAPI.Controllers
         [HttpPost]
         public async Task<JsonResult> Create(Order order)
         {
-            await db.Orders.AddAsync(order);
-            await db.SaveChangesAsync();
-            return Json(order);
+            List<Stored_Product> st_prds = new List<Stored_Product>(); 
+            bool flag = true;
+            foreach (BasketProduct basketProduct in order.basketProducts)
+            {
+                Stored_Product st_pr = await db.Stored_Products.FirstOrDefaultAsync(p => p.ProductId == basketProduct.ProductId);
+                if (basketProduct.Quantity > st_pr.Quantity)
+                {
+                    flag = false;
+                    st_prds.Add(st_pr);
+                }
+            }
+            if (flag)
+            {
+                await db.Orders.AddAsync(order);
+                await db.SaveChangesAsync();
+                return Json(order);
+            }
+            return Json($"Товаров нет в наличии: {st_prds}");
         }
 
         [HttpPut]

@@ -11,25 +11,25 @@ namespace OrderAPI.Models
         public int Id { get; set; } // Generated during user registration
 
         [Display(Name = "Список товаров")]
-        public List<BasketProduct> basketProductes { get; set; }
+        public List<BasketProduct> basketProducts { get; set; }
 
         [Display(Name = "Общая стоимость")]
         public double TotalValue { get; set; } = 0;
 
         public Basket()
         {
-            basketProductes = new List<BasketProduct>();
+            basketProducts = new List<BasketProduct>();
         }
 
         public void ComputeTotalValue()
         {
-            TotalValue = basketProductes.Sum(p => p.TotalValue);
+            TotalValue = basketProducts.Sum(p => p.TotalValue);
 
         }
 
         public void Clear()
         {
-            basketProductes.Clear();
+            basketProducts.Clear();
             TotalValue = 0;
         }
     }

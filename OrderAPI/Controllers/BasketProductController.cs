@@ -20,30 +20,29 @@ namespace OrderAPI.Controllers
         [HttpPost]
         public async Task<JsonResult> Create(BasketProduct basketProduct)
         {
-            Basket basket = await db.Baskets.Include(p => p.basketProductes).FirstAsync(p => p.Id == basketProduct.BasketId);
+            Basket basket = await db.Baskets.Include(p => p.basketProducts).FirstAsync(p => p.Id == basketProduct.BasketId);
             Product product = await db.Products.FirstOrDefaultAsync(p => p.Id == basketProduct.ProductId);
             basketProduct.TotalValue = basketProduct.Quantity * product.Price;
 
             bool flag = true;
-            foreach (BasketProduct bp in basket.basketProductes)
+            foreach (BasketProduct bp in basket.basketProducts)
             {
                 if (bp.ProductId == basketProduct.ProductId)
                 {
-                    basketProduct.Quantity += bp.Quantity;
-                    basketProduct.TotalValue += bp.TotalValue;
-                    db.BasketProductes.Update(basketProduct);
+                    bp.Quantity += basketProduct.Quantity;
+                    bp.TotalValue += basketProduct.TotalValue;
+                    db.BasketProducts.Update(bp);
                     flag = false;
                     break;
                 }
             }
             if (flag)
             {
-               
-                await db.BasketProductes.AddAsync(basketProduct);
+                await db.BasketProducts.AddAsync(basketProduct);
             }
             await db.SaveChangesAsync();
 
-            basket = await db.Baskets.Include(p => p.basketProductes).FirstAsync(p => p.Id == basketProduct.BasketId);
+            basket = await db.Baskets.Include(p => p.basketProducts).FirstAsync(p => p.Id == basketProduct.BasketId);
             basket.ComputeTotalValue();
             db.Baskets.Update(basket);
             await db.SaveChangesAsync();
@@ -72,7 +71,7 @@ namespace OrderAPI.Controllers
         [HttpPut]
         public async Task<JsonResult> Update(BasketProduct basketProduct)
         {
-            db.BasketProductes.Update(basketProduct);
+            db.BasketProducts.Update(basketProduct);
 
             Basket basket = await db.Baskets.FirstAsync(p => p.Id == basketProduct.BasketId);
             basket.ComputeTotalValue();

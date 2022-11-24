@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using OrderAPI.Models;
-using System.Net.Http;
 
 namespace OrderAPI.Controllers
 {
@@ -23,7 +22,7 @@ namespace OrderAPI.Controllers
             if (id != null)
             {
                 Basket basket = await db.Baskets.FirstOrDefaultAsync(p => p.Id == id);
-                await db.Entry(basket).Collection(p => p.basketProductes).LoadAsync();
+                await db.Entry(basket).Collection(p => p.basketProducts).LoadAsync();
                 return Json(basket);
             }
             return NotFound();
@@ -45,19 +44,13 @@ namespace OrderAPI.Controllers
         [Route("{id:int}")]
         public async Task<JsonResult> Clear(int id)
         {
-            Basket basket = await db.Baskets.Include(p => p.basketProductes).FirstOrDefaultAsync(p => p.Id == id);
+            Basket basket = await db.Baskets.Include(p => p.basketProducts).FirstOrDefaultAsync(p => p.Id == id);
             basket.Clear();
 
             db.Baskets.Update(basket);
             await db.SaveChangesAsync();
 
             return Json(basket);
-        }
-
-        public async void Get_changes()
-        {
-            using var client = new HttpClient();
-            var responce = await client.GetAsync("http://localhost:XXXXX/cat/product");
         }
     }
 }

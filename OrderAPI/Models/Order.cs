@@ -14,7 +14,7 @@ namespace OrderAPI.Models
 
         [Required]
         [Display(Name = "Товары")]
-        public List<BasketProduct> basketProductes { get; set; }
+        public List<BasketProduct> basketProducts { get; set; }
 
         [Display(Name = "Статус")]
         public bool Status { get; set; } = false;   // false - готовится, true - готов
@@ -27,7 +27,7 @@ namespace OrderAPI.Models
 
         public Order()
         {
-            basketProductes = new List<BasketProduct>();
+            basketProducts = new List<BasketProduct>();
         }
     }
 }

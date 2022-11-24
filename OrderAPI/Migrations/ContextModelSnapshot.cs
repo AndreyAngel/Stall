@@ -58,7 +58,7 @@ namespace OrderAPI.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("BasketProductes");
+                    b.ToTable("BasketProducts");
                 });
 
             modelBuilder.Entity("OrderAPI.Models.Order", b =>
@@ -98,16 +98,35 @@ namespace OrderAPI.Migrations
                     b.ToTable("Products");
                 });
 
+            modelBuilder.Entity("OrderAPI.Models.Stored_Product", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("Stored_Products");
+                });
+
             modelBuilder.Entity("OrderAPI.Models.BasketProduct", b =>
                 {
                     b.HasOne("OrderAPI.Models.Basket", "Basket")
-                        .WithMany("basketProductes")
+                        .WithMany("basketProducts")
                         .HasForeignKey("BasketId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("OrderAPI.Models.Order", null)
-                        .WithMany("basketProductes")
+                        .WithMany("basketProducts")
                         .HasForeignKey("OrderId");
 
                     b.HasOne("OrderAPI.Models.Product", "Product")
@@ -121,14 +140,25 @@ namespace OrderAPI.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("OrderAPI.Models.Stored_Product", b =>
+                {
+                    b.HasOne("OrderAPI.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("OrderAPI.Models.Basket", b =>
                 {
-                    b.Navigation("basketProductes");
+                    b.Navigation("basketProducts");
                 });
 
             modelBuilder.Entity("OrderAPI.Models.Order", b =>
                 {
-                    b.Navigation("basketProductes");
+                    b.Navigation("basketProducts");
                 });
 #pragma warning restore 612, 618
         }
