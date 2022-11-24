@@ -1,0 +1,19 @@
+﻿using Microsoft.EntityFrameworkCore;
+using DeliveryAPI.Models.DTO;
+
+namespace DeliveryAPI.Models
+{
+    public class Context: DbContext
+    {
+        public Context(DbContextOptions<Context> options) : base(options)
+        {
+            Database.EnsureCreated();
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        { }
+
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<Delivery> Deliveries { get; set; }
+    }
+}
