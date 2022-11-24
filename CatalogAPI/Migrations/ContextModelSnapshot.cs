@@ -46,6 +46,25 @@ namespace CatalogAPI.Migrations
                     b.ToTable("Categories");
                 });
 
+            modelBuilder.Entity("CatalogAPI.Models.Change", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("Changes");
+                });
+
             modelBuilder.Entity("CatalogAPI.Models.Product", b =>
                 {
                     b.Property<int>("Id")
@@ -72,6 +91,17 @@ namespace CatalogAPI.Migrations
                     b.HasIndex("CategoryId");
 
                     b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("CatalogAPI.Models.Change", b =>
+                {
+                    b.HasOne("CatalogAPI.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("CatalogAPI.Models.Product", b =>

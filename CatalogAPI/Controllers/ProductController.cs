@@ -36,6 +36,10 @@ namespace CatalogAPI.Controllers
         public async Task<JsonResult> Create(Product product)
         {
             await db.Products.AddAsync(product);
+
+            Change change = new Change() { ProductId = product.Id, Status = "Created" };
+            await db.Changes.AddAsync(change);
+
             await db.SaveChangesAsync();
             return Json(product);
         }
@@ -48,6 +52,10 @@ namespace CatalogAPI.Controllers
             {
                 Product product = new Product { Id = id.Value };
                 db.Entry(product).State = EntityState.Deleted;
+
+                Change change = new Change() { ProductId = product.Id, Status = "Deleted" };
+                await db.Changes.AddAsync(change);
+
                 await db.SaveChangesAsync();
             }
             return NotFound();
@@ -57,6 +65,9 @@ namespace CatalogAPI.Controllers
         [Route("{id:int}")]
         public async Task<JsonResult> Update(Product product)
         {
+            Change change = new Change() { ProductId = product.Id, Status = "Updated" };
+            await db.Changes.AddAsync(change);
+
             db.Products.Update(product);
             await db.SaveChangesAsync();
             return Json(product);
