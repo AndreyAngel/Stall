@@ -13,7 +13,6 @@ namespace DeliveryAPI.Models
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         { }
 
-        public DbSet<Order> Orders { get; set; }
         public DbSet<Delivery> Deliveries { get; set; }
     }
 }

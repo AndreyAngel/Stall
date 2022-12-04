@@ -1,7 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using OrderAPI.Models;
 using Microsoft.EntityFrameworkCore;
@@ -63,7 +60,7 @@ namespace OrderAPI.Controllers
                 basket.ComputeTotalValue();
 
                 await db.SaveChangesAsync();
-                return Json("OK");
+                return Ok();
             }
             return NotFound();
         }

@@ -1,20 +1,23 @@
 {
   "Routes": [
+    // CatalogAPI
     {
-      "DownstreamPathTemplate": "/api/{everything}",
-      "DownstreamScheme": "https",
+      "DownstreamPathTemplate": "/cat/{controller}",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
           "Port": 56302
         }
       ],
-      "UpstreamPathTemplate": "/cat/{everything}",
+      "UpstreamPathTemplate": "/cat/{controller}",
       "UsstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ]
     },
+    
+    // OrderAPI
     {
-      "DownstreamPathTemplate": "/api/{everything}",
-      "DownstreamScheme": "https",
+      "DownstreamPathTemplate": "/ord/{everything}",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
@@ -24,9 +27,11 @@
       "UpstreamPathTemplate": "/ord/{everything}",
       "UsstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ]
     },
+
+    // DeliveryAPI
     {
-      "DownstreamPathTemplate": "/api/{everything}",
-      "DownstreamScheme": "https",
+      "DownstreamPathTemplate": "/del/{everything}",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",

@@ -25,7 +25,7 @@ namespace DeliveryAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Orders");
+                    b.ToTable("Order");
                 });
 
             modelBuilder.Entity("DeliveryAPI.Models.Delivery", b =>

@@ -1,11 +1,6 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace GatewayAPI
 {
@@ -25,7 +20,8 @@ namespace GatewayAPI
                 {
                     config
                     .SetBasePath(hostingContext.HostingEnvironment.ContentRootPath)
-                    .AddJsonFile("ocelot.json", optional: false, reloadOnChange: true);
+                    .AddJsonFile("ocelot.json", optional: false, reloadOnChange: true)
+                    .AddEnvironmentVariables();
                 });
     }
 }

@@ -47,6 +47,7 @@ namespace CatalogAPI.Controllers
                 Category category = new Category { Id = id.Value };
                 db.Entry(category).State = EntityState.Deleted;
                 await db.SaveChangesAsync();
+                return Ok();
             }
             return NotFound();
         }

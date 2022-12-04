@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using DeliveryAPI.Models;
-using System.Net.Http;
 
 namespace DeliveryAPI.Controllers
 {
@@ -47,7 +46,7 @@ namespace DeliveryAPI.Controllers
                 Delivery delivery = new Delivery { Id = id.Value };
                 db.Entry(delivery).State = EntityState.Deleted;
                 await db.SaveChangesAsync();
-                return Json("OK");
+                return Ok("Ok");
             }
             return NotFound();
         }

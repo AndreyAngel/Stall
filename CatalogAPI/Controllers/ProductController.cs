@@ -8,7 +8,7 @@ namespace CatalogAPI.Controllers
     [Route("cat/product")]
     public class ProductController : Controller
     {
-
+        HttpClientController client;
         Context db;
         public ProductController(Context context)
         {
@@ -37,8 +37,8 @@ namespace CatalogAPI.Controllers
         {
             await db.Products.AddAsync(product);
 
-            Change change = new Change() { ProductId = product.Id, Status = "Created" };
-            await db.Changes.AddAsync(change);
+            client = new HttpClientController();
+            client.createRequest(product);
 
             await db.SaveChangesAsync();
             return Json(product);
@@ -52,11 +52,12 @@ namespace CatalogAPI.Controllers
             {
                 Product product = new Product { Id = id.Value };
                 db.Entry(product).State = EntityState.Deleted;
-
-                Change change = new Change() { ProductId = product.Id, Status = "Deleted" };
-                await db.Changes.AddAsync(change);
-
                 await db.SaveChangesAsync();
+
+                client = new HttpClientController();
+                client.deleteRequest(id.Value);
+
+                return Ok();
             }
             return NotFound();
         }
@@ -65,11 +66,12 @@ namespace CatalogAPI.Controllers
         [Route("{id:int}")]
         public async Task<JsonResult> Update(Product product)
         {
-            Change change = new Change() { ProductId = product.Id, Status = "Updated" };
-            await db.Changes.AddAsync(change);
+            client = new HttpClientController();
+            client.updateRequest(product);
 
             db.Products.Update(product);
             await db.SaveChangesAsync();
+
             return Json(product);
         }
     }

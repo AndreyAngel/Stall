@@ -47,6 +47,7 @@ namespace CatalogAPI.Controllers
                 Brand brand = new Brand { Id = id.Value };
                 db.Entry(brand).State = EntityState.Deleted;
                 await db.SaveChangesAsync();
+                return Ok();
             }
             return NotFound();
         }

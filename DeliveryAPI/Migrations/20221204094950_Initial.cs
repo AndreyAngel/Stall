@@ -7,7 +7,7 @@ namespace DeliveryAPI.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Orders",
+                name: "Order",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false),
@@ -15,7 +15,7 @@ namespace DeliveryAPI.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Orders", x => x.Id);
+                    table.PrimaryKey("PK_Order", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -31,9 +31,9 @@ namespace DeliveryAPI.Migrations
                 {
                     table.PrimaryKey("PK_Deliveries", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Deliveries_Orders_OrderId",
+                        name: "FK_Deliveries_Order_OrderId",
                         column: x => x.OrderId,
-                        principalTable: "Orders",
+                        principalTable: "Order",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -50,7 +50,7 @@ namespace DeliveryAPI.Migrations
                 name: "Deliveries");
 
             migrationBuilder.DropTable(
-                name: "Orders");
+                name: "Order");
         }
     }
 }

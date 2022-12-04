@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using OrderAPI.Models;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace OrderAPI.Controllers
 {
@@ -32,17 +31,17 @@ namespace OrderAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<JsonResult> Create(Order order)
+        public async Task<IActionResult> Create(Order order)
         {
-            List<Stored_Product> st_prds = new List<Stored_Product>(); 
+            List<StorageProduct> storageproducts = new List<StorageProduct>(); 
             bool flag = true;
             foreach (BasketProduct basketProduct in order.basketProducts)
             {
-                Stored_Product st_pr = await db.Stored_Products.FirstOrDefaultAsync(p => p.ProductId == basketProduct.ProductId);
-                if (basketProduct.Quantity > st_pr.Quantity)
+                StorageProduct storageproduct = await db.StorageProducts.FirstOrDefaultAsync(p => p.ProductId == basketProduct.ProductId);
+                if (basketProduct.Quantity > storageproduct.Quantity)
                 {
                     flag = false;
-                    st_prds.Add(st_pr);
+                    storageproducts.Add(storageproduct);
                 }
             }
             if (flag)
@@ -51,7 +50,7 @@ namespace OrderAPI.Controllers
                 await db.SaveChangesAsync();
                 return Json(order);
             }
-            return Json($"Товаров нет в наличии: {st_prds}");
+            return NotFound($"Товаров нет в наличии: {storageproducts}");
         }
 
         [HttpPut]
@@ -71,7 +70,7 @@ namespace OrderAPI.Controllers
                 Order order = new Order { Id = id.Value };
                 db.Entry(order).State = EntityState.Deleted;
                 await db.SaveChangesAsync();
-                return Json("OK");
+                return Ok("Ok");
             }
             return NotFound();
         }

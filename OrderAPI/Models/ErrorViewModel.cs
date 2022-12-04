@@ -1,5 +1,3 @@
-using System;
-
 namespace OrderAPI.Models
 {
     public class ErrorViewModel

@@ -1,7 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using OrderAPI.Models;
 using Microsoft.EntityFrameworkCore;
@@ -20,7 +17,7 @@ namespace OrderAPI.Controllers
         [HttpGet]
         public async Task<JsonResult> Get()
         {
-            return Json(await db.Stored_Products.ToListAsync());
+            return Json(await db.StorageProducts.ToListAsync());
         }
 
         [HttpGet]
@@ -28,33 +25,33 @@ namespace OrderAPI.Controllers
         public async Task<IActionResult> Get(int? id)
         {
             if (id != null)
-                return Json(await db.Stored_Products.FirstOrDefaultAsync(p => p.ProductId == id));
+                return Json(await db.StorageProducts.FirstOrDefaultAsync(p => p.ProductId == id));
             return NotFound();
         }
 
         [HttpPost]
-        public async Task<JsonResult> Create(Stored_Product stored_Product)
+        public async Task<JsonResult> Create(StorageProduct StorageProduct)
         {
-            Stored_Product st_pr = await db.Stored_Products.FirstOrDefaultAsync(p => p.ProductId == stored_Product.ProductId);
-            if (st_pr == null)
+            StorageProduct storageproduct = await db.StorageProducts.FirstOrDefaultAsync(p => p.ProductId == StorageProduct.ProductId);
+            if (storageproduct == null)
             {
-                await db.Stored_Products.AddAsync(stored_Product);
+                await db.StorageProducts.AddAsync(StorageProduct);
                 await db.SaveChangesAsync();
-                return Json(stored_Product);
+                return Json(StorageProduct);
             }
-            st_pr.Quantity += stored_Product.Quantity;
-            db.Stored_Products.Update(st_pr);
+            storageproduct.Quantity += StorageProduct.Quantity;
+            db.StorageProducts.Update(storageproduct);
             await db.SaveChangesAsync();
-            return Json(st_pr);
+            return Json(storageproduct);
 
         }
 
         [HttpPut]
-        public async Task<JsonResult> Update(Stored_Product stored_Product)
+        public async Task<JsonResult> Update(StorageProduct StorageProduct)
         {
-            db.Stored_Products.Update(stored_Product);
+            db.StorageProducts.Update(StorageProduct);
             await db.SaveChangesAsync();
-            return Json(stored_Product);
+            return Json(StorageProduct);
         }
 
         [HttpDelete]
@@ -63,10 +60,10 @@ namespace OrderAPI.Controllers
         {
             if (id != null)
             {
-                Stored_Product stored_Product = new Stored_Product { ProductId = id.Value };
-                db.Entry(stored_Product).State = EntityState.Deleted;
+                StorageProduct StorageProduct = new StorageProduct { ProductId = id.Value };
+                db.Entry(StorageProduct).State = EntityState.Deleted;
                 await db.SaveChangesAsync();
-                return Json("OK");
+                return Ok("Ok");
             }
             return NotFound();
         }

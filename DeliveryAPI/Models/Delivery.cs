@@ -1,8 +1,5 @@
 ﻿using DeliveryAPI.Models.DTO;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace DeliveryAPI.Models
 {

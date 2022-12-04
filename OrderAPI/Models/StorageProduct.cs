@@ -1,10 +1,9 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-using System.Collections.Generic;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace OrderAPI.Models
 {
-    public class Stored_Product
+    // It's product from storage
+    public class StorageProduct
     {
         public int Id { get; set; }
 

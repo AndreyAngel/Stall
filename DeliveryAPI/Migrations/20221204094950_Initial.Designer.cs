@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DeliveryAPI.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20221124084552_Initial")]
+    [Migration("20221204094950_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,7 +27,7 @@ namespace DeliveryAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Orders");
+                    b.ToTable("Order");
                 });
 
             modelBuilder.Entity("DeliveryAPI.Models.Delivery", b =>

@@ -23,11 +23,12 @@ namespace OrderAPI.Models
         public bool Payment_State { get; set; } = false;
 
         [Display(Name = "Дата и время заказа")]
-        public static DateTime DateTime { get; set; } = DateTime.Now;
+        public static DateTime DateTime { get; set; }
 
         public Order()
         {
             basketProducts = new List<BasketProduct>();
+            DateTime = DateTime.Now;
         }
     }
 }
